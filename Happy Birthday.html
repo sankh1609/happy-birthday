@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Dishu Chan 💖</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:#0f0c29;color:white;overflow:hidden}
+
+/* ---------- PAGE BASE ---------- */
+.page{
+  position:absolute;
+  inset:0;
+  padding:24px 16px;
+  transition:transform .7s cubic-bezier(.77,0,.18,1);
+  overflow:hidden;
+}
+
+/* ---------- PAGE 1 ---------- */
+#page1{
+  transform:translateX(0);
+  text-align:center;
+  background:radial-gradient(circle at top,#ff9a9e,#fad0c4 45%,#fbc2eb 75%,#a18cd1);
+}
+
+/* balloons */
+.balloon{
+  position:absolute;
+  bottom:-120px;
+  font-size:42px;
+  animation:floatUp linear infinite;
+  opacity:.8;
+  pointer-events:none;
+}
+@keyframes floatUp{
+  to{transform:translateY(-130vh);opacity:0}
+}
+
+/* tap to start music */
+.tap-music{
+  font-size:.9rem;
+  opacity:.75;
+  margin-top:8px;
+  animation:pulseText 2s infinite;
+}
+@keyframes pulseText{50%{opacity:.4}}
+
+/* cake */
+.cake-area{
+  margin:26px auto;
+  position:relative;
+  width:240px;height:240px;
+}
+.glow-ring{
+  position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.55),transparent 70%);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{50%{opacity:.3}}
+
+.cake{
+  font-size:110px;
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+}
+let cakeUnlocked = false;   // 🔒 initially locked
+
+.cake.cut{animation:pop .6s ease}
+@keyframes pop{50%{transform:translate(-50%,-55%) scale(1.15)}}
+
+.knife{
+  position:absolute;top:50%;left:-100px;width:100px;opacity:0;
+}
+.knife.show{opacity:1}
+.knife.animate{animation:knife .4s forwards}
+@keyframes knife{to{left:260px}}
+
+.swipe-hint{font-size:.9rem;opacity:.6;animation:hint 2s infinite}
+@keyframes hint{
+  0%{opacity:0;transform:translateX(-10px)}
+  50%{opacity:.6}
+  100%{opacity:0;transform:translateX(10px)}
+}
+
+button{
+  margin-top:18px;
+  padding:12px 26px;
+  border:none;
+  border-radius:30px;
+  font-size:1rem;
+  cursor:pointer
+}
+.primary-btn{background:white;color:#ff4f7b}
+.secondary-btn{background:rgba(255,255,255,.25);color:white}
+.primary-btn.disabled{opacity:.4}
+
+.countdown{
+  margin-top:14px;
+  font-size:1.1rem;
+  letter-spacing:1px;
+  opacity:0.85;
+}
+
+.countdown span{
+  font-weight:600;
+}
+
+.countdown-done{
+  display:none;
+  margin-top:14px;
+  font-size:1.3rem;
+  font-weight:600;
+  animation:pulseText 2s infinite;
+}
+
+
+/* ---------- PAGE 2 ---------- */
+#page2{
+  transform:translateX(100%);
+  background:#3b3b7a;
+  overflow-y:auto;
+}
+#page2::-webkit-scrollbar{display:none}
+#page2{scrollbar-width:none}
+
+.story{position:relative;padding-bottom:120px}
+
+/* photos */
+.bg-polaroid{
+  position:relative;
+  z-index:1;
+}
+
+.bg-polaroid img{width:100%;border-radius:4px}
+.bg-polaroid:nth-child(odd){transform:rotate(-3deg)}
+.bg-polaroid:nth-child(even){transform:rotate(4deg)}
+
+/* ---------- LETTER APPEAR ANIMATION ---------- */
+.letter{
+  max-width:460px;
+  width:90%;
+  position:fixed;   /* 🔥 overlap + stay on top */
+  top:50%;          /* first photo ke upar start */
+  left:50%;
+  transform: translate(-50%, -10%);
+
+
+  z-index:5;         /* photos se upar */
+
+  background:rgba(0,0,0,0.35);
+  padding:26px 22px;
+  border-radius:14px;
+
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.3rem, 4.5vw, 1.55rem);
+  line-height:2;
+  letter-spacing: 0.3px;
+   text-align: center;
+
+}
+
+/* grid already 2 columns */
+.photos-layer{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  justify-content:center;
+  gap:22px;
+  padding:20px 0;
+}
+
+/* base photo style */
+.bg-polaroid{
+  width:60%;
+  max-width:320px;
+  background:white;
+  padding:8px 8px 22px;
+  border-radius:6px;
+  box-shadow:0 14px 30px rgba(0,0,0,.35);
+  transition:transform .3s ease;
+}
+
+/* 🔥 RANDOM PAIR ROTATIONS */
+.bg-polaroid:nth-child(4n+1){
+  transform:rotate(-2.5deg);
+}
+.bg-polaroid:nth-child(4n+2){
+  transform:rotate(2deg);
+}
+.bg-polaroid:nth-child(4n+3){
+  transform:rotate(-1.5deg);
+}
+.bg-polaroid:nth-child(4n+4){
+  transform:rotate(1.8deg);
+}
+
+/* hover (optional, classy) */
+.bg-polaroid:hover{
+  transform:scale(1.03) rotate(0deg);
+}
+
+.letter.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.back-end{text-align:center;margin:60px 0}
+.letter-title{
+  display:inline-block;
+  font-weight:600;
+  font-size:1.2rem;
+
+  padding:6px 14px;
+  border-radius:20px;
+
+  background:rgba(255,255,255,0.15);
+  color:#fff;
+
+  box-shadow:0 0 12px rgba(255,255,255,0.15);
+}
+/* ---------- DECORATIONS LAYER ---------- */
+.decor-layer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;   /* ❌ no blocking taps */
+  z-index:0;             /* behind photos & letter */
+  overflow:hidden;
+}
+
+/* common decor style */
+.decor{
+  position:absolute;
+  font-size:2.2rem;
+  opacity:0.25;
+  animation:floatDecor linear infinite;
+}
+
+/* individual sizes */
+.balloon{font-size:2.6rem;}
+.teddy{font-size:2.4rem;}
+.choco{font-size:2.1rem;}
+
+/* floating animation */
+@keyframes floatDecor{
+  from{
+    transform:translateY(110vh) rotate(0deg);
+  }
+  to{
+    transform:translateY(-120vh) rotate(360deg);
+  }
+}
+
+/* random positions & speeds */
+.decor:nth-child(1){left:10%;animation-duration:18s;}
+.decor:nth-child(2){left:80%;animation-duration:22s;}
+
+.decor:nth-child(3){left:25%;animation-duration:26s;}
+.decor:nth-child(4){left:65%;animation-duration:30s;}
+
+.decor:nth-child(5){left:40%;animation-duration:24s;}
+.decor:nth-child(6){left:55%;animation-duration:28s;}
+
+.decor-layer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+/* ---------- DECORATIONS ---------- */
+.decor-layer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+
+.floating-decor{
+  position:absolute;
+  opacity:0.75;
+  animation:floatDecor linear forwards;
+  will-change:transform;
+}
+
+/* sizes */
+.floating-decor.balloon{font-size:2.8rem;}
+.floating-decor.teddy{font-size:2.5rem;}
+.floating-decor.choco{font-size:2.2rem;}
+
+@keyframes floatDecor{
+  from{
+    transform:translateY(110vh) rotate(0deg);
+  }
+  to{
+    transform:translateY(-130vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop src="song.mp3"></audio>
+
+<!-- PAGE 1 -->
+<div class="page" id="page1">
+
+<h1>🎂 Cut the cake & make a wish ✨</h1>
+<div class="tap-music" id="tapText">Tap anywhere to start music 🎵</div>
+<p>Swipe gently and make a wish</p>
+
+<div class="cake-area" id="cakeArea">
+  <div class="glow-ring"></div>
+  <svg class="knife show" viewBox="0 0 200 40">
+    <rect x="0" y="15" width="60" height="10" rx="5" fill="#d16ba5"/>
+    <rect x="60" y="12" width="140" height="16" rx="4" fill="#e0e0e0"/>
+  </svg>
+  <div class="cake" id="cake">🎂</div>
+</div>
+<!-- 🎂 Countdown -->
+<div id="countdownBox" class="countdown">
+  <span id="days">00</span>d :
+  <span id="hours">00</span>h :
+  <span id="minutes">00</span>m :
+  <span id="seconds">00</span>s
+</div>
+
+<div id="countdownDone" class="countdown-done">
+  🎉 It’s Your Day 🎉
+</div>
+
+
+<div class="swipe-hint">Swipe →</div>
+
+<button id="nextBtn" class="primary-btn disabled">🔒 Locked</button>
+<button id="replayBtn" class="secondary-btn">🔁 Replay Cake Cut</button>
+
+</div>
+
+<!-- PAGE 2 -->
+ <div class="page" id="page2">
+
+<!-- 🎀 Floating decorations -->
+<div class="decor-layer" id="decorLayer"></div>
+
+    <div class="story">
+<!-- LETTER FIRST -->
+<div class="letter">
+  <p>
+<span class="letter-title">Happy Birthday Dishu Chan</span><br><br>
+
+
+I hope you know how truly beautiful you are. Your heart shines through every small, gentle thing you do. Your kindness has held me through my hardest days, and your steady support makes me feel safe, seen, and never alone.<br><br>
+
+Thank you for being such a good friend—the kind who listens without judgment and shows up even when it’s not easy. You are one of the most beautiful things that happened to me this year, without a second thought, and I hope that this feeling lasts for many years to come.<br><br>
+
+Life feels softer and brighter because of you. I’m endlessly grateful for the laughter, the late-night talks, and the way you always believe in me. You are a gift to everyone who knows you, and I feel incredibly lucky to have you in my life. Even on ordinary days, just knowing you’re there makes everything feel lighter and more hopeful.<br><br>
+
+I don’t know how long this bond will last, but if I had the power to pause time, I would choose this moment and hold it forever. I truly wish that you receive more than you ever expect and achieve great heights in life. Even if I’m not present in every joyful moment, and even if one day you forget me, my best wishes will always be with you.<br><br>
+
+I hope you always stay happy and keep yourself away from negativity and negative people. It still amazes me how two strangers, who once didn’t even know of each other’s existence, became such an important part of each other’s lives.<br><br>
+
+Once again, I’m deeply thankful to have you in my life. May God bless you with endless strength and happiness. And always remember—if you ever need help, comfort, or simply someone to talk to, don’t hesitate to call me. I loved being disturbed by you, and I always will.<br><br>
+
+I love you just the way you are, so please never change yourself for anyone.<br><br>
+
+With all my love, always.<br>
+Yours, maybe dearest
+  </p>
+</div>
+
+<!-- PHOTOS AFTER -->
+<div class="bg-polaroid"><img src="image1.jpeg"></div>
+<div class="bg-polaroid"><img src="image2.jpeg"></div>
+<div class="bg-polaroid"><img src="image3.jpeg"></div>
+<div class="bg-polaroid"><img src="image4.jpeg"></div>
+<div class="bg-polaroid"><img src="image5.jpeg"></div>
+<div class="bg-polaroid"><img src="image6.jpeg"></div>
+
+
+  <div class="back-end">
+    <button class="primary-btn" onclick="goToPage1()">⬅️ Back to Cake</button>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* balloons */
+for(let i=0;i<14;i++){
+  const b=document.createElement("div");
+  b.className="balloon";
+  b.innerHTML="🎈";
+  b.style.left=Math.random()*100+"vw";
+  b.style.animationDuration=10+Math.random()*8+"s";
+  page1.appendChild(b);
+}
+
+/* tap anywhere to start music */
+document.body.addEventListener("click",()=>{
+  bgMusic.play();
+  const t=document.getElementById("tapText");
+  if(t) t.style.display="none";
+},{once:true});
+
+/* cake cut */
+let startX=0;
+cakeArea.addEventListener("mousedown",e=>startX=e.clientX);
+cakeArea.addEventListener("mouseup",e=>{
+  if(cakeUnlocked && e.clientX - startX > 80){
+
+    cake.innerHTML="🍰";
+    nextBtn.classList.remove("disabled");
+    nextBtn.innerText="💌 Open My Letter";
+    nextBtn.onclick=openLetter;
+  }
+});
+
+replayBtn.onclick=()=>{
+  cake.innerHTML="🎂";
+};
+
+function openLetter(){
+  page1.style.transform="translateX(-100%)";
+  page2.style.transform="translateX(0)";
+  setTimeout(()=>{
+    document.getElementById("letterBox").classList.add("show");
+  },400);
+}
+
+function goToPage1(){
+  page2.scrollTo(0,0);
+  document.getElementById("letterBox").classList.remove("show");
+  page2.style.transform="translateX(100%)";
+  page1.style.transform="translateX(0)";
+}
+const decorLayer = document.getElementById("decorLayer");
+const icons = [
+  { char:"🎈", class:"balloon" },
+  { char:"🧸", class:"teddy" },
+  { char:"🍫", class:"choco" }
+];
+
+function spawnDecor(){
+  const deco = document.createElement("span");
+  const item = icons[Math.floor(Math.random() * icons.length)];
+
+  deco.className = `floating-decor ${item.class}`;
+  deco.innerText = item.char;
+
+  deco.style.left = Math.random() * 100 + "vw";
+  deco.style.animationDuration = 18 + Math.random() * 15 + "s";
+
+  decorLayer.appendChild(deco);
+
+  /* auto cleanup */
+  setTimeout(()=>{
+    deco.remove();
+  }, 35000);
+}
+
+/* 🎉 CONTINUOUS SPAWN */
+setInterval(spawnDecor, 900);   // every 0.9 sec
+
+/* 🎂 COUNTDOWN LOGIC */
+const targetDate = new Date("2025-12-28T00:00:00").getTime(); 
+// ⬆️ CHANGE THIS DATE (YYYY-MM-DD)
+
+const countdownBox = document.getElementById("countdownBox");
+const countdownDone = document.getElementById("countdownDone");
+
+const timer = setInterval(() => {
+  const now = new Date().getTime();
+  const distance = targetDate - now;
+
+  if (distance <= 0) {
+  clearInterval(timer);
+
+  countdownBox.style.display = "none";
+  countdownDone.style.display = "block";
+
+  cakeUnlocked = true;   // 🔓 cake unlocked
+  document.getElementById("swipeHint").innerText = "Swipe to cut the cake 🎂";
+
+  return;
+ }
+
+
+  document.getElementById("days").innerText =
+    Math.floor(distance / (1000 * 60 * 60 * 24));
+
+  document.getElementById("hours").innerText =
+    Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+  document.getElementById("minutes").innerText =
+    Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+  document.getElementById("seconds").innerText =
+    Math.floor((distance % (1000 * 60)) / 1000);
+
+}, 1000);
+
+
+</script>
+
+</body>
+</html>
